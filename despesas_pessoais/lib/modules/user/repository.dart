@@ -10,6 +10,7 @@ class UserRepository {
       return _response.result!;
     } else {
       print(_response.errorMessage);
+      return null;
     }
   }
 }

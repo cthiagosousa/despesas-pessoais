@@ -1,15 +1,10 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 import 'package:despesas_pessoais/modules/user/models.dart';
 
-part 'provider.g.dart';
+class UserProvider extends GetxController {
+  Rx<User>? _user;
 
-class UserProvider = _UserProvider with _$UserProvider;
+  User? get user => _user?.value;
 
-abstract class _UserProvider with Store {
-
-  @observable
-  User? user;
-
-  @action
-  void setUser(User value) => user = value;
+  void setUser(User value) => _user?.value = value;
 }

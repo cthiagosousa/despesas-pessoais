@@ -10,8 +10,7 @@ class UserApi extends BaseApi {
   Future<ApiResponse<User>> login(UserApiParams params) async {
     final _dio = DioService.dio();
 
-    final _response = await _dio.post(
-      LOGIN_URL, 
+    final _response = await _dio.post(LOGIN_URL, 
       queryParameters: {
         "key": API_KEY,
       },
@@ -26,7 +25,6 @@ class UserApi extends BaseApi {
     return ApiResponse.error(_response.statusMessage ?? "Ocorreu um erro");
   }
 }
-
 class UserApiParams {
   String? email;
   String? password;
