@@ -1,12 +1,14 @@
 import 'package:despesas_pessoais/modules/router/routes.dart';
 import 'package:despesas_pessoais/modules/user/provider.dart';
+import 'package:despesas_pessoais/services/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:despesas_pessoais/services/providers.dart';
 import 'package:despesas_pessoais/modules/router/router.dart';
 import 'package:despesas_pessoais/utils/themes.dart';
 
-void main() {
+void main() async {
+  await FirebaseService.init();
   runApp(const MyApp());
 }
 

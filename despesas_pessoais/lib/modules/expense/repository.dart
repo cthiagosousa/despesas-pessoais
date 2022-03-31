@@ -1,13 +1,12 @@
-import 'package:despesas_pessoais/modules/expense/api.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:despesas_pessoais/modules/expense/models.dart';
+import 'package:despesas_pessoais/services/firestore.dart';
 
 class ExpensesRepository {
   Future<List<Expense>?> get() async {
-    final _response = await  ExpensesApi().fetch();
-
-    if(_response.result != null) {
-      return _response.result!;
-    }
+    final CollectionReference expenses = Firestore.instance.collection('expenses');
+    final data = await expenses.get();
+    data.docs;
     return null;
   }
 }

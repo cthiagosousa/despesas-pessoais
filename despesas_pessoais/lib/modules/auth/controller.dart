@@ -1,5 +1,6 @@
 import 'package:despesas_pessoais/modules/user/provider.dart';
 import 'package:despesas_pessoais/services/providers.dart';
+import 'package:despesas_pessoais/utils/response.dart';
 import 'package:get/get.dart';
 import 'package:flutter/widgets.dart';
 import 'package:despesas_pessoais/modules/user/api.dart';
@@ -29,7 +30,7 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-  Future<User?> sendLogin() async {
+  Future<FutureResponse<User?>> sendLogin() async {
     final params = UserApiParams(
       email: userTextController.text,
       password: passwordTextController.text,
@@ -37,8 +38,8 @@ class AuthController extends GetxController {
 
     final response = await _userRepository.login(params);
 
-    if(response != null) {
-      _userProvider.setUser(response);
+    if(response.success) {
+      _userProvider.setUser(response.value!);
     }
   
     return response;

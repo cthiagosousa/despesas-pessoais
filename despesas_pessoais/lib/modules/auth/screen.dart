@@ -1,6 +1,9 @@
-import 'package:despesas_pessoais/widgets/small_load_widget.dart';
+import 'package:despesas_pessoais/utils/alerts.dart';
+import 'package:despesas_pessoais/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:despesas_pessoais/modules/router/routes.dart';
+import 'package:despesas_pessoais/widgets/small_load_widget.dart';
 import 'package:despesas_pessoais/modules/auth/controller.dart';
 import 'package:despesas_pessoais/modules/core/base.dart';
 import 'package:despesas_pessoais/services/providers.dart';
@@ -66,6 +69,7 @@ class AuthScreen extends StatelessWidget {
 
                   TextField(
                     controller: _controller.passwordTextController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       hintText: "Senha",
                       hintStyle: Theme.of(context).textTheme.headline3,
@@ -99,28 +103,25 @@ class AuthScreen extends StatelessWidget {
                   );
                 }
 
-                return ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
-                    elevation: MaterialStateProperty.all(0),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
-                    )),
-                  ),
-                  child: Text(
-                    "Continuar",
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () async {
+                return ButtonWidget(
+                  text: "Continuar",
+                  onPress: () async {
                     _controller.isSending = true;
                     final response = await _controller.sendLogin();
 
-                    if(response != null) {
+                    if(response.success) {
                       _controller.isSending = false;
+                      Navigator.of(context).pushNamed(AppRoutes.HOME);
                     }
-                  }, 
+
+                    if(response.error) {
+                      _controller.isSending = false;
+                      Alerts.error(
+                        context,
+                        text: response.message ?? "Ocorreu um erro ao fazer login."
+                      );
+                    }
+                  },
                 );
               }),
             )

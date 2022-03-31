@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:despesas_pessoais/modules/user/models.dart';
 import 'package:despesas_pessoais/modules/user/urls.dart';
 import 'package:despesas_pessoais/services/dio.dart';
@@ -8,21 +9,26 @@ import 'package:despesas_pessoais/utils/response.dart';
 class UserApi extends BaseApi {
 
   Future<ApiResponse<User>> login(UserApiParams params) async {
-    final _dio = DioService.dio();
+    try {
+      final _dio = DioService.dio();
 
-    final _response = await _dio.post(LOGIN_URL, 
-      queryParameters: {
-        "key": API_KEY,
-      },
-      data: params.toMap(),
-    );
+      final _response = await _dio.post(LOGIN_URL, 
+        queryParameters: {
+          "key": API_KEY,
+        },
+        data: params.toMap(),
+      );
 
-    if(_response.statusCode == 200) {
-      final _user = User.fromMap(_response.data);
-      return ApiResponse.success(_user);
+      if(_response.statusCode == 200) {
+        final _user = User.fromMap(_response.data);
+        return ApiResponse.success(_user);
+      }
+
+      return ApiResponse.error(_response.statusMessage ?? "Ocorreu um erro");
+    } on DioError catch (error) {
+      final err = DioService.errorHandler(error);
+      return ApiResponse.error(err);
     }
-
-    return ApiResponse.error(_response.statusMessage ?? "Ocorreu um erro");
   }
 }
 class UserApiParams {

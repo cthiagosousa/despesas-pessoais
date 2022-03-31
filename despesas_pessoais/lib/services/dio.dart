@@ -19,4 +19,19 @@ class DioService {
       headers: headers,
     ));
   }
+
+  static String errorHandler(DioError error) {
+    print(error.message);
+    switch (error.response?.statusCode) {
+      case 400:
+        return "Erro ao realizar essa ação";
+      case 404:
+        return "Erro ao realizar essa ação";
+      case 500:
+        return "Ocorreu um erro nesse serviço";
+      default:
+        return error.message;
+    }
+
+  }
 }
